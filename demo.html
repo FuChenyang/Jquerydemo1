@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+  <script src="js/jquery-1.8.3.min.js"></script>
+  <style>
+
+    .father a{
+      display:block;
+      width: 300px;
+      height: 200px;
+      border:1px solid deeppink;
+      position: relative;
+    }
+    #tooltip{
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <p class="father"><a href="#" class="tooltip" title="这是我的超链接提示1">提示1</a></p>
+    <p class="father"><a href="#" class="tooltip" title="这是我的超链接提示2">提示2</a></p>
+  </div>
+  <div>
+    <a href="#" title="这是自带提示属性1">自带提示1</a>
+    <a href="#" title="这是自带提示属性2">自带提示2</a>
+  </div>
+
+<script>
+  $(function () {
+    //为了让提示与鼠标有稍微的间隔，添加变量
+    var x = 60;
+    var y = 60;
+    //给有样式的添加事件,并传入事件对象
+    $("a.tooltip").mouseover(function(e){
+        //为了防止两个title属性重叠，先把原title赋值给新div，再把原title删除
+       this.oldtitle = this.title;
+        this.title="";
+        //创建新div节点
+        var newdiv = "<div id='tooltip'>"+this.oldtitle+"</div>"
+        //添加到文档中
+        $("body").append(newdiv);
+        $("#tooltip").css({    //获取鼠标的X,Y轴的值
+            "top":(e.pageY+y)+"px",
+            "left":(e.pageX+x)+"px"
+        }).show("fast")
+    }) .mouseout(function(){
+        /*把title再赋值回去*/
+        this.title = this.oldtitle;
+        $("#tooltip").remove()    //最后移除该节点
+
+    }).mousemove(function (e) {
+        $("#tooltip").css({    //获取鼠标的X,Y轴的值
+          "top":(e.pageY+y)+"px",
+          "left":(e.pageX+x)+"px"
+        })
+    })
+  })//加载
+
+</script>
+</body>
+</html>
